@@ -1,0 +1,31 @@
+﻿@model HRHub.Web.Data.Models.Department
+@{
+    ViewData["Title"] = "Department Details";
+}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3">
+            <li class="breadcrumb-item"><a asp-action="Index">Departments</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+    </nav>
+
+    <div class="card card-shadow">
+        <div class="card-header">
+            <strong>@Model.Name</strong>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Department ID</dt>
+                <dd class="col-sm-9">@Model.DepartmentId</dd>
+
+                <dt class="col-sm-3">Company</dt>
+                <dd class="col-sm-9">@Model.Company?.Name</dd>
+            </dl>
+        </div>
+        <div class="card-footer d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.DepartmentId" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+        </div>
+    </div>
+</div>

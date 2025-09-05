@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+.card-shadow {
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    border-radius: .75rem;
+}
+
+.table thead th {
+    white-space: nowrap;
+}
