@@ -1,0 +1,10 @@
+﻿@model string
+@{
+    ViewData["Title"] = "My Attendance";
+}
+<div class="container py-4">
+    <div class="alert alert-warning">
+        No employee is linked to your account (AspNetUserId: <code>@Model</code>).<br />
+        Please ask an administrator to link your user to an Employee record.
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model HRHub.Web.Models.ViewModels.AttendanceReportVM
+@{
+    ViewData["Title"] = "Attendance Report";
+    var d = Model.Date?.ToString("yyyy-MM-dd") ?? "";
+    var ym = (Model.Year.HasValue && Model.Month.HasValue) ? $"{Model.Year:0000}-{Model.Month:00}" : "";
+}
+<div class="container py-4">
+    <h3 class="mb-3">Attendance Report</h3>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-auto">
+            <label class="form-label">Date</label>
+            <input type="date" name="date" value="@d" class="form-control" />
+        </div>
+        <div class="col-auto align-self-end">
+            <button type="submit" class="btn btn-outline-secondary">Filter by Date</button>
+        </div>
+
+        <div class="w-100"></div>
+
+        <div class="col-auto">
+            <label class="form-label">Month</label>
+            <input type="month" class="form-control"
+                   value="@ym"
+                   onchange="const v=this.value.split('-'); this.form.year.value=v[0]; this.form.month.value=v[1];" />
+            <input type="hidden" name="year" value="@(Model.Year?.ToString() ?? "")" />
+            <input type="hidden" name="month" value="@(Model.Month?.ToString() ?? "")" />
+        </div>
+        <div class="col-auto align-self-end">
+            <button type="submit" class="btn btn-outline-secondary">Filter by Month</button>
+            <a asp-action="AdminReport" class="btn btn-link">Reset</a>
+        </div>
+    </form>
+
+    <div class="card card-shadow">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Employee</th>
+                        <th>In</th>
+                        <th>Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Rows)
+                    {
+                        <tr>
+                            <td>@r.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@r.Employee</td>
+                            <td>@(r.InTime?.ToString() ?? "-")</td>
+                            <td>@(r.OutTime?.ToString() ?? "-")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

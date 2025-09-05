@@ -34,8 +34,15 @@
 
                             <!-- add -->
                         }
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Attendance" asp-action="My">My Attendance</a></li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Attendance" asp-action="AdminReport">Attendance Report</a></li>
+                        }
 
-                       
 
 
                     </ul>

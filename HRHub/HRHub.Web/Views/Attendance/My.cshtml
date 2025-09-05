@@ -1,0 +1,57 @@
+﻿@model HRHub.Web.Models.ViewModels.AttendanceMyVM
+@{
+    ViewData["Title"] = "My Attendance";
+}
+<div class="container py-4">
+    <h3 class="mb-3">My Attendance</h3>
+
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert alert-success">@TempData["Ok"]</div>
+    }
+    @if (TempData["Err"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Err"]</div>
+    }
+
+    <div class="card card-shadow col-lg-7">
+        <div class="card-body">
+            <p class="mb-1"><strong>Employee:</strong> @Model.EmployeeName</p>
+            <p class="mb-1"><strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd")</p>
+            <p class="mb-3">
+                <strong>Status:</strong>
+                @if (!Model.InTime.HasValue)
+                {
+                    <span>Not checked in</span>
+                    ;
+                }
+                else if (Model.OutTime is null)
+                {
+
+                    <span>Checked in at @Model.InTime</span>
+                    ;
+                }
+                else
+                {
+
+                    <span>Checked out at @Model.OutTime</span>
+                    ;
+                }
+            </p>
+
+            <div class="d-flex gap-2">
+                <form asp-action="CheckIn" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-primary" @(Model.InTime.HasValue ? "disabled" : "")>Check in</button>
+                </form>
+                <form asp-action="CheckOut" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-secondary"
+                            @((!Model.InTime.HasValue || Model.OutTime.HasValue) ? "disabled" : "")>
+                        Check out
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
