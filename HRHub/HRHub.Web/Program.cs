@@ -1,4 +1,5 @@
 using HRHub.Web.Data;
+using HRHub.Web.Data.Models; 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,15 +14,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// --- HR DB (HrHubContext) ---
+builder.Services.AddDbContext<HrHubContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HrHubConnection")));
+
 // --- Identity + Roles ---
 builder.Services
     .AddDefaultIdentity<IdentityUser>(options =>
     {
-        options.SignIn.RequireConfirmedAccount = false; 
+        options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
     })
-    .AddRoles<IdentityRole>() // <-- Roles enable
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
@@ -38,7 +43,8 @@ await using (var scope = app.Services.CreateAsyncScope())
         if (!await roleMgr.RoleExistsAsync(r))
             await roleMgr.CreateAsync(new IdentityRole(r));
 
-    var adminEmail = "admin@hrcore.local";
+  
+    var adminEmail = "admin@hrhub.local";
     var admin = await userMgr.FindByEmailAsync(adminEmail);
     if (admin is null)
     {
@@ -70,7 +76,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();   
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
