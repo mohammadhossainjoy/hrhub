@@ -1,0 +1,47 @@
+﻿@model HRHub.Web.Data.Models.Employee
+@{
+    ViewData["Title"] = "Employee Details";
+}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3">
+            <li class="breadcrumb-item"><a asp-action="Index">Employees</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+    </nav>
+
+    <div class="card card-shadow col-lg-8">
+        <div class="card-header"><strong>@Model.FullName</strong></div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Employee ID</dt>
+                <dd class="col-sm-9">@Model.EmployeeId</dd>
+
+                <dt class="col-sm-3">Emp No</dt>
+                <dd class="col-sm-9">@Model.EmpNo</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Company</dt>
+                <dd class="col-sm-9">@Model.Company?.Name</dd>
+
+                <dt class="col-sm-3">Department</dt>
+                <dd class="col-sm-9">@Model.Department?.Name</dd>
+
+                <dt class="col-sm-3">Designation</dt>
+                <dd class="col-sm-9">@Model.Designation?.Title</dd>
+
+                <dt class="col-sm-3">Join Date</dt>
+                <dd class="col-sm-9">@Model.JoinDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Active</dt>
+                <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+            </dl>
+        </div>
+        <div class="card-footer d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.EmployeeId" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+        </div>
+    </div>
+</div>
