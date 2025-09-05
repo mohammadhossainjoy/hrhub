@@ -1,0 +1,35 @@
+﻿@model HRHub.Web.Data.Models.Company
+@{
+    ViewData["Title"] = "Delete Company";
+}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3">
+            <li class="breadcrumb-item"><a asp-action="Index">Companies</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Delete</li>
+        </ol>
+    </nav>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Are you sure?</strong> This will permanently remove <em>@Model.Name</em>.
+    </div>
+
+    <div class="card card-shadow col-lg-7">
+        <div class="card-body">
+            <dl class="row mb-4">
+                <dt class="col-sm-4">Company ID</dt>
+                <dd class="col-sm-8">@Model.CompanyId</dd>
+
+                <dt class="col-sm-4">Name</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post" class="d-flex gap-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="CompanyId" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
