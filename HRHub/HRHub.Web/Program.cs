@@ -1,3 +1,4 @@
+using HRHub.Web.Services;
 using HRHub.Web.Data;
 using HRHub.Web.Data.Models; 
 using Microsoft.AspNetCore.Identity;
@@ -29,7 +30,10 @@ builder.Services
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<LeaveService>();
+
 
 var app = builder.Build();
 

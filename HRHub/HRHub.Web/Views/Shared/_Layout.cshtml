@@ -43,6 +43,14 @@
                             <li class="nav-item"><a class="nav-link" asp-controller="Attendance" asp-action="AdminReport">Attendance Report</a></li>
                         }
 
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Leaves" asp-action="My">My Leaves</a></li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Leaves" asp-action="Pending">Pending Leaves</a></li>
+                        }
 
 
                     </ul>
