@@ -41,6 +41,9 @@
         </div>
         <div class="card-footer d-flex gap-2">
             <a asp-action="Edit" asp-route-id="@Model.EmployeeId" class="btn btn-primary">Edit</a>
+            <a asp-controller="Promotions" asp-action="Create" asp-route-employeeId="@Model.EmployeeId" class="btn btn-warning">Promote</a>
+            <a asp-controller="Promotions" asp-action="History" asp-route-id="@Model.EmployeeId" class="btn btn-outline-secondary">Promotion History</a>
+
             <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
         </div>
     </div>

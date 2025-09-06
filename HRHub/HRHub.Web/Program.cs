@@ -33,6 +33,9 @@ builder.Services
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<LeaveService>();
+builder.Services.AddScoped<PromotionService>();
+
+
 
 
 var app = builder.Build();
