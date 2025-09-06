@@ -1,8 +1,133 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "HRHub — Human Resource Management";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero -->
+<section class="py-4">
+    <div class="container">
+        <div class="card card-hero shadow-soft border-0">
+            <div class="card-body p-5">
+                <h1 class="display-5 fw-semibold mb-2 text-dark">HRHub</h1>
+                <p class="lead text-secondary mb-4">
+                    A lightweight HRMS built with ASP.NET Core MVC &amp; EF Core — Employees, Attendance, Leaves and Promotions.
+                </p>
+
+                @if (!(User?.Identity?.IsAuthenticated ?? false))
+                {
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary px-4" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
+                        <a class="btn btn-outline-light text-primary border-primary px-4" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <!-- =======================
+         Self Service (Cards)
+         ======================= -->
+    <section class="pb-4">
+        <div class="container">
+            <h5 class="mb-3">Self Service</h5>
+            <div class="row g-3">
+
+                <!-- My Attendance -->
+                <div class="col-md-4">
+                    <div class="card card-tile h-100">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">My Attendance</h6>
+                            <p class="text-muted small mb-3">Check-in / check-out for today.</p>
+                            <a class="btn btn-sm btn-primary" asp-controller="Attendance" asp-action="My">Open</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Leaves (Employee only) -->
+                @if (User.IsInRole("Employee"))
+                {
+                    <div class="col-md-4">
+                        <div class="card card-tile h-100">
+                            <div class="card-body">
+                                <h6 class="card-title mb-1">My Leaves</h6>
+                                <p class="text-muted small mb-3">Apply for a leave or track status.</p>
+                                <a class="btn btn-sm btn-primary" asp-controller="Leaves" asp-action="My">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Optional: My Profile (link to Identity Manage) -->
+                <div class="col-md-4">
+                    <div class="card card-tile h-100">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">My Profile</h6>
+                            <p class="text-muted small mb-3">Update account password &amp; details.</p>
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-area="Identity" asp-page="/Account/Manage/Index">Open</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================
+         Admin quick actions
+         ======================= -->
+    @if (User.IsInRole("Admin"))
+    {
+        <section class="pb-5">
+            <div class="container">
+                <h5 class="mb-3">Admin</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card card-tile h-100">
+                            <div class="card-body">
+                                <h6 class="card-title mb-1">Employees</h6>
+                                <p class="text-muted small mb-3">Manage employee records.</p>
+                                <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="Index">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-tile h-100">
+                            <div class="card-body">
+                                <h6 class="card-title mb-1">Attendance Report</h6>
+                                <p class="text-muted small mb-3">Filter by date or month.</p>
+                                <a class="btn btn-sm btn-primary" asp-controller="Attendance" asp-action="AdminReport">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-tile h-100">
+                            <div class="card-body">
+                                <h6 class="card-title mb-1">Pending Leaves</h6>
+                                <p class="text-muted small mb-3">Approve or reject requests.</p>
+                                <a class="btn btn-sm btn-primary" asp-controller="Leaves" asp-action="Pending">Open</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-tile h-100">
+                            <div class="card-body">
+                                <h6 class="card-title mb-1">Master Data</h6>
+                                <p class="text-muted small mb-3">Companies, Departments, Designations.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a class="btn btn-sm btn-outline-primary" asp-controller="Companies" asp-action="Index">Companies</a>
+                                    <a class="btn btn-sm btn-outline-primary" asp-controller="Departments" asp-action="Index">Departments</a>
+                                    <a class="btn btn-sm btn-outline-primary" asp-controller="Designations" asp-action="Index">Designations</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    }
+}

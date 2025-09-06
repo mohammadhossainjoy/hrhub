@@ -3,73 +3,88 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HRHub.Web</title>
+    <title>@ViewData["Title"] - HRHub</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HRHub.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100 bg-body">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HRHub.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Brand navbar with custom gradient -->
+        <nav class="navbar navbar-expand-lg navbar-dark brand-navbar shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-semibold tracking-wide" asp-controller="Home" asp-action="Index">HRHub</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @* Admin-only dropdown *@
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Companies" asp-action="Index">Companies</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Departments" asp-action="Index">Departments</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Designations" asp-action="Index">Designations</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Employees" asp-action="Index">Employees</a></li>
-
-                            <!-- add -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-soft" aria-labelledby="adminDrop">
+                                    <li><a class="dropdown-item" asp-controller="Employees" asp-action="Index">Employees</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" asp-controller="Companies" asp-action="Index">Companies</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Departments" asp-action="Index">Departments</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Designations" asp-action="Index">Designations</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" asp-controller="Leaves" asp-action="Pending">Pending Leaves</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Attendance" asp-action="AdminReport">Attendance Report</a></li>
+                                </ul>
+                            </li>
                         }
+
+                        @* Employee self-service in navbar (first visit enables auto-link for attendance) *@
                         @if (User.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Attendance" asp-action="My">My Attendance</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="selfDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Self Service
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-soft" aria-labelledby="selfDrop">
+                                    <li><a class="dropdown-item" asp-controller="Attendance" asp-action="My">My Attendance</a></li>
+                                    @if (User.IsInRole("Employee"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Leaves" asp-action="My">My Leaves</a></li>
+                                    }
+                                </ul>
+                            </li>
                         }
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Attendance" asp-action="AdminReport">Attendance Report</a></li>
-                        }
-
-                        @if (User.IsInRole("Employee"))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Leaves" asp-action="My">My Leaves</a></li>
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Leaves" asp-action="Pending">Pending Leaves</a></li>
-                        }
-
-
                     </ul>
-                    <partial name="_LoginPartial" />
+
+                    <div class="d-flex">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main role="main" class="flex-fill py-4">
         <div class="container">
-            &copy; 2025 - HRHub.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="mt-auto brand-footer border-0">
+        <div class="container py-3 small text-light d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+            <span>© @DateTime.UtcNow.Year — HRHub</span>
+            <span>Built with ASP.NET Core MVC &amp; EF Core</span>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
